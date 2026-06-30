@@ -1,107 +1,95 @@
-import json
-import os
+from database import (
+    add_student,
+    view_students,
+    search_student,
+    update_student,
+    delete_student,
+    sort_by_name,
+    sort_by_marks,
+    topper,
+    student_count,
+    backup_database,
+    restore_database
+)
 
-FILE_NAME = "students.json"
 
-# Load students
-def load_students():
-    if os.path.exists(FILE_NAME):
-        with open(FILE_NAME, "r") as file:
-            return json.load(file)
-    return []
+def menu():
+    while True:
+        print("\n" + "=" * 50)
+        print("      STUDENT MANAGEMENT SYSTEM")
+        print("=" * 50)
+        print("1. Add Student")
+        print("2. View Students")
+        print("3. Search Student")
+        print("4. Update Student")
+        print("5. Delete Student")
+        print("6. Sort Students by Name")
+        print("7. Sort Students by Marks")
+        print("8. Show Topper")
+        print("9. Student Count")
+        print("10. Backup Database")
+        print("11. Restore Database")
+        print("12. Exit")
 
-# Save students
-def save_students(students):
-    with open(FILE_NAME, "w") as file:
-        json.dump(students, file, indent=4)
+        choice = input("\nEnter your choice: ")
 
-# Add student
-def add_student(students):
-    name = input("Enter Student Name: ")
-    roll_no = input("Enter Roll Number: ")
-    course = input("Enter Course: ")
+        if choice == "1":
+            roll = input("Roll Number: ")
+            name = input("Name: ")
+            age = input("Age: ")
+            gender = input("Gender: ")
+            course = input("Course: ")
+            marks = input("Marks: ")
 
-    student = {
-        "name": name,
-        "roll_no": roll_no,
-        "course": course
-    }
+            add_student(
+                roll,
+                name,
+                age,
+                gender,
+                course,
+                marks
+            )
 
-    students.append(student)
-    save_students(students)
+        elif choice == "2":
+            view_students()
 
-    print("Student Added Successfully!")
+        elif choice == "3":
+            roll = input("Enter Roll Number: ")
+            search_student(roll)
 
-# View students
-def view_students(students):
-    if not students:
-        print("No students found!")
-        return
+        elif choice == "4":
+            roll = input("Enter Roll Number to Update: ")
+            update_student(roll)
 
-    print("\n===== Student Records =====")
+        elif choice == "5":
+            roll = input("Enter Roll Number to Delete: ")
+            delete_student(roll)
 
-    for i, student in enumerate(students, start=1):
-        print(f"\nStudent {i}")
-        print(f"Name     : {student['name']}")
-        print(f"Roll No  : {student['roll_no']}")
-        print(f"Course   : {student['course']}")
+        elif choice == "6":
+            sort_by_name()
 
-# Search student
-def search_student(students):
-    roll_no = input("Enter Roll Number: ")
+        elif choice == "7":
+            sort_by_marks()
 
-    for student in students:
-        if student["roll_no"] == roll_no:
-            print("\nStudent Found")
-            print(f"Name    : {student['name']}")
-            print(f"Roll No : {student['roll_no']}")
-            print(f"Course  : {student['course']}")
-            return
+        elif choice == "8":
+            topper()
 
-    print("Student Not Found!")
+        elif choice == "9":
+            student_count()
 
-# Delete student
-def delete_student(students):
-    roll_no = input("Enter Roll Number to Delete: ")
+        elif choice == "10":
+            backup_database()
 
-    for student in students:
-        if student["roll_no"] == roll_no:
-            students.remove(student)
-            save_students(students)
-            print("Student Deleted Successfully!")
-            return
+        elif choice == "11":
+            restore_database()
 
-    print("Student Not Found!")
+        elif choice == "12":
+            print("\nThank you for using Student Management System.")
+            break
 
-# Main Program
-students = load_students()
+        else:
+            print("\nInvalid Choice! Please try again.")
 
-while True:
 
-    print("\n===== STUDENT MANAGEMENT SYSTEM =====")
-    print("1. Add Student")
-    print("2. View Students")
-    print("3. Search Student")
-    print("4. Delete Student")
-    print("5. Exit")
-
-    choice = input("Enter Choice: ")
-
-    if choice == "1":
-        add_student(students)
-
-    elif choice == "2":
-        view_students(students)
-
-    elif choice == "3":
-        search_student(students)
-
-    elif choice == "4":
-        delete_student(students)
-
-    elif choice == "5":
-        print("Thank You!")
-        break
-
-    else:
-        print("Invalid Choice!")
+if __name__ == "__main__":
+    menu()
